@@ -15,17 +15,25 @@ import (
 
 func connectMySQL() {
 	fmt.Println("Connect MySQL")
-	db, err := sql.Open("react-go-app", "root:root@(localhost:3306)")
+	db, err := sql.Open("mysql", "root:root@(localhost:3306)/react-go-app")
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Println(db)
+	defer db.Close()
+	fmt.Println("Success Connect")
+
+	rows, err := db.Query("SELECT * FROM name")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer rows.Close()
+
+	fmt.Println("rows:", rows)
 }
 
 func StartWebServer() error {
 	fmt.Println("Rest API with Mux Routers")
 	router := mux.NewRouter().StrictSlash(true)
-	connectMySQL()
 
 	router.HandleFunc("/", rootPage)
 	router.HandleFunc("/items", fetchAllItems).Methods("GET")
@@ -53,6 +61,9 @@ var items []*ItemParams
 func rootPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the Go Api Server")
 	fmt.Println("Root endpoint is hooked!")
+
+	connectMySQL()
+
 }
 
 func fetchAllItems(w http.ResponseWriter, r *http.Request) {
