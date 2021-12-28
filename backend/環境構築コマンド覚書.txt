@@ -3,5 +3,6 @@
 // backendのディレクトリをGo module化
 
 >> go get github.com/gorilla/mux
->> go get github.com/go-sql-driver/mysql
+>> go get -u github.com/go-sql-driver/mysql
+>> go get -u github.com/jinzhu/gorm
 // 使用する外部ライブラリをインポート

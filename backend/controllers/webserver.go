@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -11,24 +10,35 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 )
 
 func connectMySQL() {
+	DBMS := "mysql"
+	USER := "backend"
+	PASS := "pass"
+	PROTOCOL := "tcp(mysql:3306)"
+	DBNAME := "react_go_app"
+
+	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
 	fmt.Println("Connect MySQL")
-	db, err := sql.Open("mysql", "root:pass@(mysql:3306)/react_go_app")
+	//db, err := sql.Open("mysql", "root:pass@tcp(127.0.0.1:3306)/react_go_app")
+	db, err := gorm.Open(DBMS, CONNECT)
 	if err != nil {
 		panic(err.Error())
 	}
 	defer db.Close()
 	fmt.Println("Success Connect")
+	fmt.Println("Changed3")
+	fmt.Println(db)
 
-	rows, err := db.Query("SELECT * FROM name")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer rows.Close()
-
-	fmt.Println("rows:", rows)
+	//rows, err := db.Query("SELECT * FROM name")
+	//if err != nil {
+	//	panic(err.Error())
+	//}
+	//defer rows.Close()
+	//
+	//fmt.Println("rows:", rows)
 }
 
 func StartWebServer() error {
