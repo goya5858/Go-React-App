@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -65,8 +65,8 @@ func fetchSingleItem(w http.ResponseWriter, r *http.Request) {
 
 func createItem(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("/items POST")
-	//reqBody, _ := io.ReadAll(r.Body) //VSCodeでエラー出てるけど動く
-	reqBody, _ := ioutil.ReadAll(r.Body)
+	reqBody, _ := io.ReadAll(r.Body) // go.modに記述されているGoのバージョンを確認
+	//reqBody, _ := ioutil.ReadAll(r.Body)
 	var item ItemParams
 	if err := json.Unmarshal(reqBody, &item); err != nil {
 		log.Fatal(err)
@@ -92,7 +92,8 @@ func updateItem(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	reqBody, _ := ioutil.ReadAll(r.Body)
+	reqBody, _ := io.ReadAll(r.Body)
+	//reqBody, _ := ioutil.ReadAll(r.Body)
 	var updateItem ItemParams
 	if err := json.Unmarshal(reqBody, &updateItem); err != nil {
 		log.Fatal(err)
@@ -115,7 +116,7 @@ func updateItem(w http.ResponseWriter, r *http.Request) {
 
 func init() {
 	items = []*ItemParams{
-		&ItemParams{
+		{
 			Id:        "1",
 			ItemName:  "item_1",
 			Price:     2500,
@@ -124,7 +125,7 @@ func init() {
 			UpdatedAt: time.Now(),
 			DeletedAt: time.Now(),
 		},
-		&ItemParams{
+		{
 			Id:        "2",
 			ItemName:  "item_2",
 			Price:     1200,
