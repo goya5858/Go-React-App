@@ -12,8 +12,8 @@ services:
     working_dir: "/go/src/app"
     networks:
       - app-tier
-    ports:
-      - 8080:8080
+    #ports:
+    #  - 8080:8080
     command: go run "./main.go"
 
   frontend: # FrontEnd Reactでガワを作成
@@ -29,8 +29,8 @@ services:
       - app-tier
     volumes:
       - ./frontend/front-app/:/usr/src/app
-    ports:
-      - 3000:3000
+    #ports:
+    #  - 3000:3000
     command: "npm start"
   
   nginx: #WebServer プロキシサーバーとして利用
@@ -59,8 +59,8 @@ services:
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
       - ./mysql/conf.d:/etc/mysql/conf.d
       - ./mysql/mysql_data:/var/lib/mysql
-    ports:
-      - 3306:3306
+    #ports:
+    #  - 3306:3306
     networks:
       - database-tier
   
