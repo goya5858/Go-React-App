@@ -59,8 +59,8 @@ services:
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
       - ./mysql/conf.d:/etc/mysql/conf.d
       - ./mysql/mysql_data:/var/lib/mysql
-    #ports:
-    #  - 3306:3306
+    ports:
+      - 3306:3306
     networks:
       - database-tier
   
