@@ -61,8 +61,6 @@ services:
       - ./mysql/mysql_data:/var/lib/mysql
     ports:
       - 3306:3306
-    links:
-      - "backend"
     networks:
       - database-tier
   
@@ -74,8 +72,6 @@ services:
       - PMA_HOST=mysql
       - PMA_USER=root
       - PMA_PASSWORD=root
-    links:
-      - mysql
     ports:
       - 1234:80
     depends_on:
@@ -83,7 +79,6 @@ services:
     networks:
       - database-tier
     
-
 
 networks:
   app-tier:
