@@ -16,4 +16,11 @@ docker compose up --build
 ```
 http://localhost
 ```
-へアクセスするとReactで構築されたでもページへ遷移できます
+へアクセスするとReactで構築されたでもページへ遷移できます  
+
+  
+また、
+```
+http://localhost:1234
+```
+へのアクセスで、phpmyadminを用いてデータベースサーバーの詳細を確認できます
