@@ -49,14 +49,15 @@ services:
       - database-tier
   
   mysql: #MySQLをデータベースとして使用　Backendにリンク
-    image: mysql:latest
+    image: mysql:8.0
     container_name: mysql_container
     environment:
-      - MYSQL_ROOT_PASSWORD=pass
-      - MYSQL_USER=backend
-      - MYSQL_PASSWORD=pass
-      #- MYSQL_DATABASE=react_go_app
-      - TZ=Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: react_go_app
+      MYSQL_USER: backend
+      MYSQL_PASSWORD: pass
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
       - ./mysql/conf.d:/etc/mysql/conf.d
@@ -65,8 +66,6 @@ services:
       - 3306:3306
     networks:
       - database-tier
-    cap_add:
-      - SYS_NICE # 追加
   
   phpmyadmin: #MySQLへのアクセス　中身の確認
     image: phpmyadmin/phpmyadmin

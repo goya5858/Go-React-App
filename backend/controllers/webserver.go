@@ -72,14 +72,14 @@ func rootPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the Go Api Server")
 	fmt.Println("Root endpoint is hooked!")
 
-	connectMySQL()
-
 }
 
 func fetchAllItems(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("/items endpoint is hooked!")
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(items)
+
+	connectMySQL()
 }
 
 func fetchSingleItem(w http.ResponseWriter, r *http.Request) {
