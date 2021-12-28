@@ -53,7 +53,7 @@ services:
     container_name: mysql_container
     environment:
       - MYSQL_ROOT_PASSWORD=pass
-      #- MYSQL_DATABASE=react-go-app
+      #- MYSQL_DATABASE=react_go_app
       - TZ=Asia/Tokyo
     volumes:
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d

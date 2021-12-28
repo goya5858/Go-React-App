@@ -15,7 +15,7 @@ import (
 
 func connectMySQL() {
 	fmt.Println("Connect MySQL")
-	db, err := sql.Open("mysql", "root:pass@(localhost:3306)/react-go-app")
+	db, err := sql.Open("mysql", "root:pass@(mysql:3306)/react_go_app")
 	if err != nil {
 		panic(err.Error())
 	}
