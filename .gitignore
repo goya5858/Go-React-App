@@ -1,1 +1,2 @@
 mysql/mysql_data/*
+!mysql/mysql_data/.gitkeep
