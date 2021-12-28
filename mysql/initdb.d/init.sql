@@ -1,0 +1,11 @@
+DROP DATABASE IF EXISTS react_go_app;
+CREATE DATABASE react_go_app;
+USE react_go_app;
+DROP TABLE IF EXISTS name;
+ 
+CREATE TABLE name (
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+name TEXT NOT NULL
+)DEFAULT CHARACTER SET=utf8;
+ 
+INSERT INTO name (name) VALUES ("Taro"),("Hanako"),("John");
