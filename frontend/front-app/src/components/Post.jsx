@@ -8,7 +8,8 @@ const Post = () => {
             url: "http://localhost/api"
         } )
         .then( res =>{
-            console.log(res)
+            console.log(res);
+            alert( res.data );
         } )
     }
 
@@ -18,7 +19,8 @@ const Post = () => {
             url: "http://localhost/api/items"
         } )
         .then( res =>{
-            console.log(res)
+            console.log(res);
+            alert( JSON.stringify(res.data) );
         } )
     }
 
@@ -28,7 +30,8 @@ const Post = () => {
             url: "http://localhost/api/item/2"
         } )
         .then( res =>{
-            console.log(res)
+            console.log(res);
+            alert( JSON.stringify(res.data) );
         } )
     }
     
@@ -47,7 +50,8 @@ const Post = () => {
                     }
         } )
         .then( res =>{
-            console.log(res)
+            console.log(res);
+            alert( JSON.stringify(res.data) );
         } )
     }
 
@@ -57,7 +61,8 @@ const Post = () => {
             url: "http://localhost/api/item/1"
         } )
         .then( res =>{
-            console.log(res)
+            console.log(res);
+            alert( "DELETE Data" );
         } )
     }
 
@@ -76,7 +81,8 @@ const Post = () => {
                     }
         } )
         .then( res =>{
-            console.log(res)
+            console.log(res);
+            alert( JSON.stringify(res) );
         } )
     }
 
