@@ -1,0 +1,92 @@
+version: '3'
+
+services:
+  backend: # BackEnd GolangでAPIを受け取って処理
+    container_name: "golang-container"
+    build: 
+      context: "./backend"
+      dockerfile: Dockerfile
+    tty: true
+    volumes:
+      - ./backend/:/go/src/app
+    working_dir: "/go/src/app"
+    networks:
+      - app-tier
+    ports:
+      - 8080:8080
+    command: go run "./main.go"
+
+  frontend: # FrontEnd Reactでガワを作成
+    container_name: "react-container"
+    build: 
+      context: "./frontend"
+      dockerfile: Dockerfile
+    working_dir: "/usr/src/app"
+    tty: true
+    depends_on:
+      - backend
+    networks:
+      - app-tier
+    volumes:
+      - ./frontend/front-app/:/usr/src/app
+    ports:
+      - 3000:3000
+    command: "npm start"
+  
+  nginx: #WebServer プロキシサーバーとして利用
+    container_name: nginx_container
+    image: nginx:latest
+    ports:
+      - 80:80
+    environment:
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./nginx/.:/etc/nginx/
+    depends_on:
+      - mysql
+    networks:
+      - app-tier
+      - database-tier
+  
+  mysql: #MySQLをデータベースとして使用　Backendにリンク
+    image: mysql:8.0.16
+    container_name: mysql_container
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=react-go-app
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    links:
+      - "backend"
+    networks:
+      - database-tier
+  
+  phpmyadmin: #MySQLへのアクセス　中身の確認
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    links:
+      - mysql
+    ports:
+      - 1234:80
+    depends_on:
+      - mysql
+    networks:
+      - database-tier
+    
+
+
+networks:
+  app-tier:
+    driver: bridge
+  database-tier:
+    driver: bridge
