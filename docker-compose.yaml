@@ -2,7 +2,7 @@ version: '3'
 
 services:
   backend: # BackEnd GolangでAPIを受け取って処理
-    container_name: "golang-container"
+    container_name: "golang_container"
     build: 
       context: "./backend"
       dockerfile: Dockerfile
@@ -18,7 +18,7 @@ services:
     command: go run "./main.go"
 
   frontend: # FrontEnd Reactでガワを作成
-    container_name: "react-container"
+    container_name: "react_container"
     build: 
       context: "./frontend"
       dockerfile: Dockerfile
@@ -74,7 +74,7 @@ services:
       - PMA_ARBITRARY=1
       - PMA_HOST=mysql
       - PMA_USER=root
-      - PMA_PASSWORD=pass
+      - PMA_PASSWORD=root
     ports:
       - 1234:80
     depends_on:

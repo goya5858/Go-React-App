@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,19 +11,11 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
 )
 
 func connectMySQL() {
-	DBMS := "mysql"   // どのSQLを使用するか　今回はMySQL
-	USER := "backend" // backend_containerから利用
-	PASS := "docker"
-	PROTOCOL := "tcp(mysql:3306)"
-	DBNAME := "react_go_app"
-
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
 	fmt.Println("Connect MySQL")
-	db, err := gorm.Open(DBMS, CONNECT)
+	db, err := sql.Open("mysql", "backend:docker@tcp(mysql:3306)/react_go_app")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -30,6 +23,19 @@ func connectMySQL() {
 	fmt.Println("Success Connect")
 	fmt.Println("Changed")
 	fmt.Println(db)
+
+	row := db.QueryRow("SELECT * FROM name")
+	if err != nil {
+		panic(err.Error())
+	}
+	//defer row.Close()
+
+	var id int
+	var name string
+	row.Scan(&id, &name)
+
+	//fmt.Println("rows:", row)
+	fmt.Println("id: ", id, " name: ", name)
 }
 
 func StartWebServer() error {
@@ -159,4 +165,9 @@ func init() {
 			DeletedAt: time.Now(),
 		},
 	}
+}
+
+type User struct {
+	ID   int
+	Name string
 }

@@ -8,4 +8,4 @@ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 name TEXT NOT NULL
 )DEFAULT CHARACTER SET=utf8;
  
-INSERT INTO name (name) VALUES ("Taro"),("Hanako"),("John");
+INSERT INTO name (name) VALUES ("Taro_test");
