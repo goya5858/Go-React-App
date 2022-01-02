@@ -34,7 +34,7 @@ services:
       - 3000:3000
     command: "npm start"
   
-  nginx: #WebServer プロキシサーバーとして利用
+  nginx: #プロキシサーバーとして利用
     container_name: nginx_container
     image: nginx:latest
     ports:
@@ -52,10 +52,10 @@ services:
     image: mysql:8.0
     container_name: mysql_container
     environment:
-      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: react_go_app
       MYSQL_USER: backend
-      MYSQL_PASSWORD: pass
+      MYSQL_PASSWORD: docker
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:

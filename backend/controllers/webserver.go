@@ -14,31 +14,22 @@ import (
 )
 
 func connectMySQL() {
-	DBMS := "mysql"
-	USER := "root"
-	PASS := "root"
+	DBMS := "mysql"   // どのSQLを使用するか　今回はMySQL
+	USER := "backend" // backend_containerから利用
+	PASS := "docker"
 	PROTOCOL := "tcp(mysql:3306)"
 	DBNAME := "react_go_app"
 
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
 	fmt.Println("Connect MySQL")
-	//db, err := sql.Open("mysql", "root:pass@tcp(127.0.0.1:3306)/react_go_app")
 	db, err := gorm.Open(DBMS, CONNECT)
 	if err != nil {
 		panic(err.Error())
 	}
 	defer db.Close()
 	fmt.Println("Success Connect")
-	fmt.Println("Changed3")
+	fmt.Println("Changed")
 	fmt.Println(db)
-
-	//rows, err := db.Query("SELECT * FROM name")
-	//if err != nil {
-	//	panic(err.Error())
-	//}
-	//defer rows.Close()
-	//
-	//fmt.Println("rows:", rows)
 }
 
 func StartWebServer() error {
