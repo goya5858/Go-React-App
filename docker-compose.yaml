@@ -12,6 +12,7 @@ services:
     working_dir: "/go/src/app"
     networks:
       - app-tier
+      - database-tier
     ports:
       - 8080:8080
     command: go run "./main.go"
@@ -46,7 +47,6 @@ services:
       - mysql
     networks:
       - app-tier
-      - database-tier
   
   mysql: #MySQLをデータベースとして使用　Backendにリンク
     image: mysql:8.0

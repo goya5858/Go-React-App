@@ -15,8 +15,8 @@ import (
 
 func connectMySQL() {
 	DBMS := "mysql"
-	USER := "backend"
-	PASS := "pass"
+	USER := "root"
+	PASS := "root"
 	PROTOCOL := "tcp(mysql:3306)"
 	DBNAME := "react_go_app"
 
