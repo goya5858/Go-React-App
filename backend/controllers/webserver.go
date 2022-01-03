@@ -22,7 +22,7 @@ func StartWebServer() error {
 
 	router.HandleFunc("/item", createItem).Methods("POST")
 	router.HandleFunc("/item/{id}", deleteItem).Methods("DELETE")
-	//router.HandleFunc("/item/{id}", updateItem).Methods("PUT")
+	router.HandleFunc("/item/{id}", updateItem).Methods("PUT")
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", 8080), router)
 }
@@ -34,12 +34,9 @@ type ItemParams struct {
 	Stock    int    `json:"stock,omitempty"`
 }
 
-//var items []*ItemParams
-
 func rootPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the Go Api Server")
 	fmt.Println("Root endpoint is hooked!")
-
 }
 
 func fetchAllItems_from_SQL() []*ItemParams {
@@ -155,42 +152,30 @@ func deleteItem(w http.ResponseWriter, r *http.Request) {
 	deleteItem_for_SQL(id)
 }
 
-//func updateItem(w http.ResponseWriter, r *http.Request) {
-//	vars := mux.Vars(r)
-//	id := vars["id"]
-//
-//	reqBody, _ := io.ReadAll(r.Body)
-//	//reqBody, _ := ioutil.ReadAll(r.Body)
-//	var updateItem ItemParams
-//	if err := json.Unmarshal(reqBody, &updateItem); err != nil {
-//		log.Fatal(err)
-//	}
-//
-//	for index, item := range items {
-//		if item.Id == id {
-//			items[index] = &ItemParams{
-//				Id:       item.Id,
-//				ItemName: updateItem.ItemName,
-//				Price:    updateItem.Price,
-//				Stock:    updateItem.Stock,
-//			}
-//		}
-//	}
-//}
+func updateItem_for_SQL(key string, item ItemParams) {
+	fmt.Println("Connect MySQL")
+	db, err := sql.Open("mysql", "backend:docker@tcp(mysql_container:3306)/react_go_app")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+	fmt.Println("Success Connect")
 
-//func init() {
-//	items = []*ItemParams{
-//		{
-//			Id:       "1",
-//			ItemName: "item_1",
-//			Price:    2500,
-//			Stock:    100,
-//		},
-//		{
-//			Id:       "2",
-//			ItemName: "item_2",
-//			Price:    1200,
-//			Stock:    200,
-//		},
-//	}
-//}
+	stmt, err := db.Prepare("UPDATE test_table SET ItemName=?, Price=?, Stock=? WHERE id=?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	stmt.Exec(item.ItemName, item.Price, item.Stock, key)
+}
+
+func updateItem(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	reqBody, _ := io.ReadAll(r.Body)
+	var updateItem ItemParams
+	if err := json.Unmarshal(reqBody, &updateItem); err != nil {
+		log.Fatal(err)
+	}
+	updateItem_for_SQL(id, updateItem)
+}
