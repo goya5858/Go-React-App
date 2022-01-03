@@ -11,5 +11,5 @@ Stock INT NOT NULL
 );
 
  
-INSERT INTO test_table (ItemName, Price, Stock) VALUES ("item_1", 2500, 100);
-INSERT INTO test_table (ItemName, Price, Stock) VALUES ("item_2", 1200, 200);
+INSERT INTO test_table (ItemName, Price, Stock) VALUES ("item_1", 250, 100);
+INSERT INTO test_table (ItemName, Price, Stock) VALUES ("item_2", 120, 200);
