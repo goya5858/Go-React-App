@@ -83,7 +83,7 @@ func fetchSingleItem_from_SQL(key string) ItemParams {
 	defer db.Close()
 	fmt.Println("Success Connect")
 
-	row := db.QueryRow("SELECT * FROM test_table WHERE id=2")
+	row := db.QueryRow("SELECT * FROM test_table WHERE id=?", key)
 	if err != nil {
 		panic(err.Error())
 	}
