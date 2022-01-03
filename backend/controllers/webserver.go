@@ -23,17 +23,22 @@ func connectMySQL() {
 	fmt.Println("Changed")
 	fmt.Println(db)
 
-	row := db.QueryRow("SELECT * FROM test_table")
+	// rowが一つのみだとわかっているとき
+	//row := db.QueryRow("SELECT * FROM test_table")
+	//var one_item ItemParams
+	//row.Scan(&one_item.Id, &one_item.ItemName, &one_item.Price, &one_item.Stock)
+	//fmt.Println("ID:", one_item.Id, ", ItemName:", one_item.ItemName, ", Price:", one_item.Price, ", Stock:", one_item.Stock)
+
+	rows, err := db.Query("SELECT * FROM test_table")
 	if err != nil {
 		panic(err.Error())
 	}
-	//defer row.Close()
-
-	var one_item ItemParams
-	row.Scan(&one_item.Id, &one_item.ItemName, &one_item.Price, &one_item.Stock)
-
-	//fmt.Println("rows:", row)
-	fmt.Println("ID:", one_item.Id, ", ItemName:", one_item.ItemName, ", Price:", one_item.Price, ", Stock:", one_item.Stock)
+	defer rows.Close()
+	for rows.Next() {
+		var one_item ItemParams
+		rows.Scan(&one_item.Id, &one_item.ItemName, &one_item.Price, &one_item.Stock)
+		fmt.Println("ID:", one_item.Id, ", ItemName:", one_item.ItemName, ", Price:", one_item.Price, ", Stock:", one_item.Stock)
+	}
 }
 
 func StartWebServer() error {
