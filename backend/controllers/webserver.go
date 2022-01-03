@@ -20,8 +20,6 @@ func connectMySQL() {
 	}
 	defer db.Close()
 	fmt.Println("Success Connect")
-	fmt.Println("Changed")
-	fmt.Println(db)
 
 	// rowが一つのみだとわかっているとき
 	//row := db.QueryRow("SELECT * FROM test_table")
