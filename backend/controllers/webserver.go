@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io"
+	"log"
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -18,7 +20,7 @@ func StartWebServer() error {
 	router.HandleFunc("/items", fetchAllItems).Methods("GET")
 	router.HandleFunc("/item/{id}", fetchSingleItem).Methods("GET")
 
-	//router.HandleFunc("/item", createItem).Methods("POST")
+	router.HandleFunc("/item", createItem).Methods("POST")
 	//router.HandleFunc("/item/{id}", deleteItem).Methods("DELETE")
 	//router.HandleFunc("/item/{id}", updateItem).Methods("PUT")
 
@@ -106,19 +108,34 @@ func fetchSingleItem(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(item)
 }
 
-//
-//func createItem(w http.ResponseWriter, r *http.Request) {
-//	fmt.Println("/items POST")
-//	reqBody, _ := io.ReadAll(r.Body) // go.modに記述されているGoのバージョンを確認
-//	//reqBody, _ := ioutil.ReadAll(r.Body)
-//	var item ItemParams
-//	if err := json.Unmarshal(reqBody, &item); err != nil {
-//		log.Fatal(err)
-//	}
-//
-//	items = append(items, &item)
-//	json.NewEncoder(w).Encode(item)
-//}
+func createItem_for_SQL(item ItemParams) {
+	fmt.Println("Connect MySQL")
+	db, err := sql.Open("mysql", "backend:docker@tcp(mysql_container:3306)/react_go_app")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+	fmt.Println("Success Connect")
+
+	stmt, err := db.Prepare("INSERT INTO test_table (ItemName, Price, Stock) VALUES (?, ?, ?)")
+	if err != nil {
+		log.Fatal(err)
+	}
+	stmt.Exec(item.ItemName, item.Price, item.Stock)
+}
+
+func createItem(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("/items POST")
+	reqBody, _ := io.ReadAll(r.Body) // go.modに記述されているGoのバージョンを確認
+
+	var item ItemParams
+	if err := json.Unmarshal(reqBody, &item); err != nil {
+		log.Fatal(err)
+	}
+	createItem_for_SQL(item)
+	json.NewEncoder(w).Encode(item)
+}
+
 //
 //func deleteItem(w http.ResponseWriter, r *http.Request) {
 //	vars := mux.Vars(r)
