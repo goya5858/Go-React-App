@@ -23,7 +23,7 @@ func connectMySQL() {
 	fmt.Println("Changed")
 	fmt.Println(db)
 
-	row := db.QueryRow("SELECT * FROM name")
+	row := db.QueryRow("SELECT * FROM test_table")
 	if err != nil {
 		panic(err.Error())
 	}

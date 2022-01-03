@@ -3,7 +3,7 @@ CREATE DATABASE react_go_app;
 USE react_go_app;
 DROP TABLE IF EXISTS name;
  
-CREATE TABLE name (
+CREATE TABLE test_table (
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 ItemName TEXT NOT NULL,
 Price INT NOT NULL,

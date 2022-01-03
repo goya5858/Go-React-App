@@ -57,10 +57,10 @@ services:
       MYSQL_USER: backend
       MYSQL_PASSWORD: docker
       TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --authentication_policy=mysql_native_password
     volumes:
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
-      - ./mysql/conf.d/my.conf:/etc/mysql/conf.d/my.cnf
+      #- ./mysql/conf.d/my.conf:/etc/mysql/conf.d/my.cnf #アクセス権限の影響で読み込まれない
       #- ./mysql/mysql_data:/var/lib/mysql #コメントアウトすると、DBをコンテナ建て替えるたびに初期化
     ports:
       - 3306:3306
