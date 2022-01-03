@@ -29,12 +29,11 @@ func connectMySQL() {
 	}
 	//defer row.Close()
 
-	var id int
-	var name string
-	row.Scan(&id, &name)
+	var one_item ItemParams
+	row.Scan(&one_item.Id, &one_item.ItemName, &one_item.Price, &one_item.Stock)
 
 	//fmt.Println("rows:", row)
-	fmt.Println("id: ", id, " name: ", name)
+	fmt.Println("ID:", one_item.Id, ", ItemName:", one_item.ItemName, ", Price:", one_item.Price, ", Stock:", one_item.Stock)
 }
 
 func StartWebServer() error {
@@ -152,9 +151,4 @@ func init() {
 			Stock:    200,
 		},
 	}
-}
-
-type User struct {
-	ID   int
-	Name string
 }
