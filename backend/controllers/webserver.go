@@ -1,30 +1,18 @@
 package controllers
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
-
-func connectMySQL() {
-	fmt.Println("Connect MySQL")
-	db, err := sql.Open("react-go-app", "root:root@(localhost:3306)")
-	if err != nil {
-		panic(err.Error())
-	}
-	fmt.Println(db)
-}
 
 func StartWebServer() error {
 	fmt.Println("Rest API with Mux Routers")
 	router := mux.NewRouter().StrictSlash(true)
-	connectMySQL()
 
 	router.HandleFunc("/", rootPage)
 	router.HandleFunc("/items", fetchAllItems).Methods("GET")
