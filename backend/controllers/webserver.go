@@ -16,8 +16,8 @@ func StartWebServer() error {
 
 	router.HandleFunc("/", rootPage)
 	router.HandleFunc("/items", fetchAllItems).Methods("GET")
-	//router.HandleFunc("/item/{id}", fetchSingleItem).Methods("GET")
-	//
+	router.HandleFunc("/item/{id}", fetchSingleItem).Methods("GET")
+
 	//router.HandleFunc("/item", createItem).Methods("POST")
 	//router.HandleFunc("/item/{id}", deleteItem).Methods("DELETE")
 	//router.HandleFunc("/item/{id}", updateItem).Methods("PUT")
@@ -74,19 +74,38 @@ func fetchAllItems(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(items)
 }
 
-//func fetchSingleItem(w http.ResponseWriter, r *http.Request) {
-//	fmt.Println("/item endpoint is hooked!")
-//	w.Header().Set("Content-Type", "application/json")
-//	vars := mux.Vars(r)
-//	key := vars["id"]
-//
-//	// 現在所有してるItemsの中からIDが一致しているものを返す
-//	for _, item := range items {
-//		if item.Id == key {
-//			json.NewEncoder(w).Encode(item)
-//		}
-//	}
-//}
+func fetchSingleItem_from_SQL(key string) ItemParams {
+	fmt.Println("Connect MySQL")
+	db, err := sql.Open("mysql", "backend:docker@tcp(mysql_container:3306)/react_go_app")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+	fmt.Println("Success Connect")
+
+	row := db.QueryRow("SELECT * FROM test_table WHERE id=2")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var one_item ItemParams
+	row.Scan(&one_item.Id, &one_item.ItemName, &one_item.Price, &one_item.Stock)
+	fmt.Println("ID:", one_item.Id, ", ItemName:", one_item.ItemName, ", Price:", one_item.Price, ", Stock:", one_item.Stock)
+
+	return one_item
+}
+
+func fetchSingleItem(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("/item endpoint is hooked!")
+	w.Header().Set("Content-Type", "application/json")
+	vars := mux.Vars(r)
+	key := vars["id"]
+
+	// 現在所有してるItemsの中からIDが一致しているものを返す
+	var item ItemParams = fetchSingleItem_from_SQL(key)
+	json.NewEncoder(w).Encode(item)
+}
+
 //
 //func createItem(w http.ResponseWriter, r *http.Request) {
 //	fmt.Println("/items POST")
