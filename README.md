@@ -24,3 +24,20 @@ http://localhost
 http://localhost:1234
 ```
 へのアクセスで、phpmyadminを用いてデータベースサーバーの詳細を確認できます
+
+### 細かい仕様
+```
+./frontend/front-app/src/component/SamplePage.jsx
+./backend/controllers/webserver.go
+```
+がフロントとバックそれぞれのメインファイル  
+
+また、
+```
+./frontend/front-app/src/component/xxx.jsx
+```
+と
+```
+./backend/controllers/yyy.go
+```
+がCRUD操作のそれぞれに一対一で対応している
