@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -54,13 +53,10 @@ func StartWebServer() error {
 }
 
 type ItemParams struct {
-	Id        string    `json:"id"`
-	ItemName  string    `json:"item_name,omitempty"`
-	Price     int       `json:"price,omitempty"`
-	Stock     int       `json:"stock,omitempty"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt time.Time `json:"deleted_at"`
+	Id       string `json:"id"`
+	ItemName string `json:"item_name,omitempty"`
+	Price    int    `json:"price,omitempty"`
+	Stock    int    `json:"stock,omitempty"`
 }
 
 var items []*ItemParams
@@ -132,13 +128,10 @@ func updateItem(w http.ResponseWriter, r *http.Request) {
 	for index, item := range items {
 		if item.Id == id {
 			items[index] = &ItemParams{
-				Id:        item.Id,
-				ItemName:  updateItem.ItemName,
-				Price:     updateItem.Price,
-				Stock:     updateItem.Stock,
-				CreatedAt: item.CreatedAt,
-				UpdatedAt: updateItem.UpdatedAt,
-				DeletedAt: item.DeletedAt,
+				Id:       item.Id,
+				ItemName: updateItem.ItemName,
+				Price:    updateItem.Price,
+				Stock:    updateItem.Stock,
 			}
 		}
 	}
@@ -147,22 +140,16 @@ func updateItem(w http.ResponseWriter, r *http.Request) {
 func init() {
 	items = []*ItemParams{
 		{
-			Id:        "1",
-			ItemName:  "item_1",
-			Price:     2500,
-			Stock:     100,
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
-			DeletedAt: time.Now(),
+			Id:       "1",
+			ItemName: "item_1",
+			Price:    2500,
+			Stock:    100,
 		},
 		{
-			Id:        "2",
-			ItemName:  "item_2",
-			Price:     1200,
-			Stock:     200,
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
-			DeletedAt: time.Now(),
+			Id:       "2",
+			ItemName: "item_2",
+			Price:    1200,
+			Stock:    200,
 		},
 	}
 }
