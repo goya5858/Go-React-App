@@ -21,7 +21,7 @@ func StartWebServer() error {
 	router.HandleFunc("/item/{id}", fetchSingleItem).Methods("GET")
 
 	router.HandleFunc("/item", createItem).Methods("POST")
-	//router.HandleFunc("/item/{id}", deleteItem).Methods("DELETE")
+	router.HandleFunc("/item/{id}", deleteItem).Methods("DELETE")
 	//router.HandleFunc("/item/{id}", updateItem).Methods("PUT")
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", 8080), router)
@@ -136,19 +136,25 @@ func createItem(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(item)
 }
 
-//
-//func deleteItem(w http.ResponseWriter, r *http.Request) {
-//	vars := mux.Vars(r)
-//	id := vars["id"]
-//
-//	for index, item := range items {
-//		if item.Id == id {
-//			// indexがidの部分を飛ばす
-//			items = append(items[:index], items[index+1:]...)
-//		}
-//	}
-//}
-//
+func deleteItem_for_SQL(key string) {
+	fmt.Println("Connect MySQL")
+	db, err := sql.Open("mysql", "backend:docker@tcp(mysql_container:3306)/react_go_app")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+	fmt.Println("Success Connect")
+
+	db.Exec("DELETE FROM test_table WHERE id=?", key)
+}
+
+func deleteItem(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	deleteItem_for_SQL(id)
+}
+
 //func updateItem(w http.ResponseWriter, r *http.Request) {
 //	vars := mux.Vars(r)
 //	id := vars["id"]
