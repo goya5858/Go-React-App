@@ -1,4 +1,6 @@
 import axios from 'axios';
+import GET_all_items from './GET_all_items';
+import GET_one_item from './GET_one_item';
 
 const Post = () => {
     
@@ -10,28 +12,6 @@ const Post = () => {
         .then( res =>{
             console.log(res);
             alert( res.data );
-        } )
-    }
-
-    const handleGET_items = async() => {
-        axios( {
-            method: "get",
-            url: "http://localhost/api/items"
-        } )
-        .then( res =>{
-            console.log(res);
-            alert( JSON.stringify(res.data) );
-        } )
-    }
-
-    const handleGET_item_2 = async() => {
-        axios( {
-            method: "get",
-            url: "http://localhost/api/item/2"
-        } )
-        .then( res =>{
-            console.log(res);
-            alert( JSON.stringify(res.data) );
         } )
     }
     
@@ -86,13 +66,8 @@ const Post = () => {
                 ROOT
             </button>
 
-            <button onClick={handleGET_items}>
-                GET_items
-            </button>
-
-            <button onClick={handleGET_item_2}>
-                GET_item_2
-            </button>
+            <GET_all_items/>
+            <GET_one_item/>
 
             <button onClick={handlePOST_item}>
                 POST
