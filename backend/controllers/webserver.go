@@ -13,12 +13,12 @@ func StartWebServer() error {
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/", rootPage)
-	router.HandleFunc("/items", fetchAllItems).Methods("GET")
-	router.HandleFunc("/item/{id}", fetchSingleItem).Methods("GET")
+	router.HandleFunc("/items", GET_all_items).Methods("GET")
+	router.HandleFunc("/item/{id}", GET_one_item).Methods("GET")
 
-	router.HandleFunc("/item", createItem).Methods("POST")
-	router.HandleFunc("/item/{id}", deleteItem).Methods("DELETE")
-	router.HandleFunc("/item/{id}", updateItem).Methods("PUT")
+	router.HandleFunc("/item", POST_item).Methods("POST")
+	router.HandleFunc("/item/{id}", DELETE_item).Methods("DELETE")
+	router.HandleFunc("/item/{id}", PUT_item).Methods("PUT")
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", 8080), router)
 }

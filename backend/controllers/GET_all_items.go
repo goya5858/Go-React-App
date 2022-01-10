@@ -11,15 +11,15 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func fetchAllItems(w http.ResponseWriter, r *http.Request) {
+func GET_all_items(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("/items endpoint is hooked!")
 	w.Header().Set("Content-Type", "application/json")
 
-	var items []*ItemParams = fetchAllItems_from_SQL()
+	var items []*ItemParams = GET_all_items_from_SQL()
 	json.NewEncoder(w).Encode(items)
 }
 
-func fetchAllItems_from_SQL() []*ItemParams {
+func GET_all_items_from_SQL() []*ItemParams {
 	// DataBase接続
 	fmt.Println("Connect MySQL")
 	db, err := sql.Open("mysql", "backend:docker@tcp(mysql_container:3306)/react_go_app")

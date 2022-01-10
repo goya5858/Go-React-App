@@ -12,17 +12,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func fetchSingleItem(w http.ResponseWriter, r *http.Request) {
+func GET_one_item(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("/item endpoint is hooked!")
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 	key := vars["id"]
 
-	var item ItemParams = fetchSingleItem_from_SQL(key) //SQL操作
+	var item ItemParams = GET_one_item_from_SQL(key) //SQL操作
 	json.NewEncoder(w).Encode(item)
 }
 
-func fetchSingleItem_from_SQL(key string) ItemParams {
+func GET_one_item_from_SQL(key string) ItemParams {
 	// DataBase接続
 	fmt.Println("Connect MySQL")
 	db, err := sql.Open("mysql", "backend:docker@tcp(mysql_container:3306)/react_go_app")

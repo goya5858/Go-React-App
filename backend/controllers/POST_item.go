@@ -13,7 +13,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func createItem(w http.ResponseWriter, r *http.Request) {
+func POST_item(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("/items POST")
 	reqBody, _ := io.ReadAll(r.Body) // go.modに記述されているGoのバージョンを確認
 
@@ -21,11 +21,11 @@ func createItem(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(reqBody, &item); err != nil {
 		log.Fatal(err)
 	}
-	createItem_for_SQL(item) //SQL操作
+	POST_item_for_SQL(item) //SQL操作
 	json.NewEncoder(w).Encode(item)
 }
 
-func createItem_for_SQL(item ItemParams) {
+func POST_item_for_SQL(item ItemParams) {
 	// DataBase接続
 	fmt.Println("Connect MySQL")
 	db, err := sql.Open("mysql", "backend:docker@tcp(mysql_container:3306)/react_go_app")

@@ -11,14 +11,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func deleteItem(w http.ResponseWriter, r *http.Request) {
+func DELETE_item(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"] //string
 
-	deleteItem_for_SQL(id) //SQL操作
+	DELETE_item_for_SQL(id) //SQL操作
 }
 
-func deleteItem_for_SQL(key string) {
+func DELETE_item_for_SQL(key string) {
 	// DataBase接続
 	fmt.Println("Connect MySQL")
 	db, err := sql.Open("mysql", "backend:docker@tcp(mysql_container:3306)/react_go_app")

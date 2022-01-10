@@ -14,7 +14,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func updateItem(w http.ResponseWriter, r *http.Request) {
+func PUT_item(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
@@ -23,10 +23,10 @@ func updateItem(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(reqBody, &updateItem); err != nil {
 		log.Fatal(err)
 	}
-	updateItem_for_SQL(id, updateItem) //SQL操作
+	PUT_item_for_SQL(id, updateItem) //SQL操作
 }
 
-func updateItem_for_SQL(key string, item ItemParams) {
+func PUT_item_for_SQL(key string, item ItemParams) {
 	// DataBase接続
 	fmt.Println("Connect MySQL")
 	db, err := sql.Open("mysql", "backend:docker@tcp(mysql_container:3306)/react_go_app")
