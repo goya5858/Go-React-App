@@ -5,7 +5,7 @@ import POST_item from './POST_item';
 import DELETE_item from './DELETE_item';
 import PUT_item from './PUT_item';
 
-const Post = () => {
+const SamplePage = () => {
     
     const handleROOT = async() => {
         axios( {
@@ -17,8 +17,6 @@ const Post = () => {
             alert( res.data );
         } )
     }
-
-    
 
     return (
         <div>
@@ -35,4 +33,4 @@ const Post = () => {
     )
 }
 
-export default Post;
+export default SamplePage;
