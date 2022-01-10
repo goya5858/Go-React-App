@@ -29,14 +29,14 @@ services:
     networks:
       - app-tier
     volumes:
-      - ./frontend/front-app/:/usr/src/app
+      - ./frontend/:/usr/src/app
     ports:
       - 3000:3000
     command: "npm start"
   
   nginx: #プロキシサーバーとして利用
     container_name: nginx_container
-    image: nginx:latest
+    image: nginx:perl
     ports:
       - 80:80
     environment:
