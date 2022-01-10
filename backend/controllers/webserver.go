@@ -1,10 +1,7 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -15,14 +12,19 @@ func StartWebServer() error {
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/", rootPage)
-	router.HandleFunc("/items", fetchAllItems).Methods("GET")
-	router.HandleFunc("/item/{id}", fetchSingleItem).Methods("GET")
+	router.HandleFunc("/items", GET_all_items).Methods("GET")
+	router.HandleFunc("/item/{id}", GET_one_item).Methods("GET")
 
-	router.HandleFunc("/item", createItem).Methods("POST")
-	router.HandleFunc("/item/{id}", deleteItem).Methods("DELETE")
-	router.HandleFunc("/item/{id}", updateItem).Methods("PUT")
+	router.HandleFunc("/item", POST_item).Methods("POST")
+	router.HandleFunc("/item/{id}", DELETE_item).Methods("DELETE")
+	router.HandleFunc("/item/{id}", PUT_item).Methods("PUT")
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", 8080), router)
+}
+
+func rootPage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome to the Go Api Server")
+	fmt.Println("Root endpoint is hooked!")
 }
 
 type ItemParams struct {
@@ -33,79 +35,6 @@ type ItemParams struct {
 }
 
 var items []*ItemParams
-
-func rootPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the Go Api Server")
-	fmt.Println("Root endpoint is hooked!")
-}
-
-func fetchAllItems(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("/items endpoint is hooked!")
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(items)
-}
-
-func fetchSingleItem(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("/item endpoint is hooked!")
-	w.Header().Set("Content-Type", "application/json")
-	vars := mux.Vars(r)
-	key := vars["id"]
-
-	// 現在所有してるItemsの中からIDが一致しているものを返す
-	for _, item := range items {
-		if item.Id == key {
-			json.NewEncoder(w).Encode(item)
-		}
-	}
-}
-
-func createItem(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("/items POST")
-	reqBody, _ := io.ReadAll(r.Body) // go.modに記述されているGoのバージョンを確認
-	//reqBody, _ := ioutil.ReadAll(r.Body)
-	var item ItemParams
-	if err := json.Unmarshal(reqBody, &item); err != nil {
-		log.Fatal(err)
-	}
-
-	items = append(items, &item)
-	json.NewEncoder(w).Encode(item)
-}
-
-func deleteItem(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
-
-	for index, item := range items {
-		if item.Id == id {
-			// indexがidの部分を飛ばす
-			items = append(items[:index], items[index+1:]...)
-		}
-	}
-}
-
-func updateItem(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
-
-	reqBody, _ := io.ReadAll(r.Body)
-	//reqBody, _ := ioutil.ReadAll(r.Body)
-	var updateItem ItemParams
-	if err := json.Unmarshal(reqBody, &updateItem); err != nil {
-		log.Fatal(err)
-	}
-
-	for index, item := range items {
-		if item.Id == id {
-			items[index] = &ItemParams{
-				Id:       item.Id,
-				ItemName: updateItem.ItemName,
-				Price:    updateItem.Price,
-				Stock:    updateItem.Stock,
-			}
-		}
-	}
-}
 
 func init() {
 	items = []*ItemParams{
