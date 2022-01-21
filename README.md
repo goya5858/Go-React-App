@@ -16,7 +16,7 @@ docker compose up --build
 ```
 http://localhost
 ```
-へアクセスするとReactで構築されたでもページへ遷移できます  
+へアクセスするとReactで構築されたデモページへ遷移できます  
 
   
 また、
@@ -27,17 +27,17 @@ http://localhost:1234
 
 ### 細かい仕様
 ```
-./frontend/front-app/src/component/SamplePage.jsx
+./frontend/src/component/SamplePage.jsx
 ./backend/controllers/webserver.go
 ```
 がフロントとバックそれぞれのメインファイル  
 
 また、
 ```
-./frontend/front-app/src/component/xxx.jsx
+./frontend/src/component/xxx.jsx
 ```
 と
 ```
-./backend/controllers/yyy.go
+./backend/controllers/xxx.go
 ```
 がCRUD操作のそれぞれに一対一で対応している
