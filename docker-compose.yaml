@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  backend: # BackEnd GolangでAPIを受け取って処理
+  backend: # アプリケーションサーバ(BackEnd) Golangでリクエストを受け取って処理
     container_name: "golang_container"
     build: 
       context: "./backend"
@@ -17,7 +17,7 @@ services:
       - 8080:8080
     command: go run "./main.go"
 
-  frontend: # FrontEnd Reactでガワを作成
+  frontend: # ウェブサーバ(FrontEnd) Reactでガワを作成
     container_name: "react_container"
     build: 
       context: "./frontend"
@@ -48,7 +48,7 @@ services:
     networks:
       - app-tier
   
-  mysql: #MySQLをデータベースとして使用　Backendにリンク
+  mysql: #データベースサーバ MySQLをデータベースとして使用　Backendにリンク
     image: mysql:8.0
     container_name: mysql_container
     environment:
@@ -67,7 +67,7 @@ services:
     networks:
       - database-tier
   
-  phpmyadmin: #MySQLへのアクセス　中身の確認
+  phpmyadmin: #MySQLへのアクセス　中身の確認用
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     environment:
